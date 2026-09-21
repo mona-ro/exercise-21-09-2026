@@ -50,16 +50,28 @@ ft_1
 # no one correct way to do this
 # Ensure that the figure is clearly labeled and includes an appropriate legend
 
-aggregate(xxx) |>
-  ggplot(aes(xxx)) + 
-  geom_line()
-...
+yrbss$grade <- factor(yrbss$grade, levels = c("9", "10", "11", "12", "other"))
 
+aggregate(physically_active_7d ~ grade + gender,
+  yrbss, mean, na.rm = TRUE) |>
+  ggplot(aes(x = grade, y = physically_active_7d,
+             color = gender, group = gender)) +
+  geom_line() +
+  labs(x = "Grade", y = "Mean # of Physically Active Days",
+    color = "Gender", title = "Mean Number of Physically Active Days by Grade and Gender")
 
 # Create a plot that shows the relationship betwen physical activity and bmi
 # among female students in grade 12 
 # Ensure that the figure is clearly labeled and includes an appropriate legend
 
+yrbss$bmi <- yrbss$weight / (yrbss$height^2)
 
+grade12_f <- yrbss |>
+  filter(grade == "12", gender == "female")
+
+ggplot(grade12_f, aes(x = bmi, y = physically_active_7d)) +
+  geom_point(color = "skyblue") +
+  labs(x = "BMI", y = "Physically Active Days in the Past 7 Days",
+    title = "Physical Activity and BMI Among Female Grade 12 Students")
 
 # Push your completed code to your GitHub repository
